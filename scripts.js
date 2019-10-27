@@ -8,8 +8,8 @@ const Nav = ({ location, companies }) => {
     const { pathname } = location;
     return (
         <nav>
-            <Link to=''>Acme Company Profits with React Router</Link>
-            <Link to='companies'>Companies ({companies.length})</Link>
+            <Link to='' className = {pathname === '' || pathname === '/home' ? 'selected' : ''}>Acme Company Profits with React Router</Link>
+            <Link to='companies' className = {pathname === '/companies' ? 'selected' : ''}>Companies ({companies.length})</Link>
         </nav>
     )
 }
@@ -27,7 +27,7 @@ const Companies = ({ location, companies }) => {
     // console.log(pathname)
     return (
         <div>
-            {companies.map((company, idx) => <div key={idx}><Link to={`/companies/${company.id}`}>{company.name}</Link></div>)}
+            {companies.map((company, idx) => <div key={idx} className = {pathname === `/companies/${company.id}` ? 'selected' : ''}><Link to={`/companies/${company.id}`}>{company.name}</Link></div>)}
             <Route path='/companies/:id' render = {(props) => <Company {...props} company = { Company } />} />
         </div>
     );
@@ -64,10 +64,10 @@ class Company extends Component {
     render() {
         // console.log(this.props.match.params.id)
         const { companyInfo } = this.state
-        console.log(companyInfo)
+        // console.log(companyInfo)
         return (
             <div>
-                { companyInfo.map(year => <div className='entry'><div className ='year'>{ year.fiscalYear }</div><div> { year.amount } </div></div>) }
+                { companyInfo.map((year, idx) => <div key = {idx} className='entry'><div className ='year'>{ year.fiscalYear }</div><div> { year.amount } </div></div>) }
             </div>
         )
     }
@@ -97,9 +97,7 @@ class App extends Component {
                 <Switch>
                     <Route path='/home' exact component = { Home } />
                     <Route path='/companies' render = {(props) => <Companies {...props} companies = { companies } />}/>
-                    {/* <Route path='/companies/:id' component = { Company } /> */}
-                    {/* <Route path='/companies/:id' render = {(props) => <Company {...props} company = { Company } />} /> */}
-                    <Redirect to='home' />
+                    <Redirect to='/home' />
                 </Switch>
             </HashRouter>
         )
